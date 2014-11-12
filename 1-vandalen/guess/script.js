@@ -4,13 +4,21 @@ window.onload = function(){
 	
 	var secret = Math.floor( Math.random() * (100-1)+1 )+1; Math.floor( Math.random() * (100-1)+1) + 1; Math.floor( Math.random() * 100)+1; 
 	
+	//Skapar en variabel som håller koll på antalet gissningar
+	var numGuesses = 0;
+	
 	// I denna funktion ska du skriva koden för att hantera "spelet"
 	var guess = function(number){
-		console.log("Det hemliga talet: " + secret); // Du når den yttre variabeln secret innifrån funktionen.
+		console.log("Det hemliga talet: " + secret); // Du når den yttre variabeln secret inifrån funktionen.
 		console.log("Du gissade: " + number); // Detta nummer är det som användaren gissade på.
 		
+
 		// Skapar en lokal array answer som ska returneras från funktionen
 		var answer = [];
+		answer[0] = false;
+		
+		//Ökar antalet gissningar som gjorts med 1
+		numGuesses++;
 		
 		//Jämför det gissade talet med det hemliga talet
 		switch (true) {
@@ -23,7 +31,8 @@ window.onload = function(){
 				return answer;
 				
 			default:
-				answer[1] = "Du gissade rätt!";
+				answer[0] = true;
+				answer[1] = "Du gissade rätt! Du behövde " + numGuesses + " gissningar.";
 				return answer;
 		}
 			
