@@ -12,27 +12,37 @@ window.onload = function(){
 		console.log("Det hemliga talet: " + secret); // Du når den yttre variabeln secret inifrån funktionen.
 		console.log("Du gissade: " + number); // Detta nummer är det som användaren gissade på.
 		
-
+		//Kollar att användaren har matat in ett nummer och inget annat fuffens
+		
+		
 		// Skapar en lokal array answer som ska returneras från funktionen
 		var answer = [];
 		answer[0] = false;
 		
-		//Ökar antalet gissningar som gjorts med 1
-		numGuesses++;
 		
 		//Jämför det gissade talet med det hemliga talet
 		switch (true) {
 			case number < secret:
-				answer[1] = "Det gissade talet är för lågt. Gissa igen! Hemliga talet: " + secret;
+				//Ökar antalet gissningar som gjorts med 1
+				numGuesses++;
+				answer[1] = "Det gissade talet är för lågt. Gissa igen! Hemliga talet: " + secret + ", Antal gissningar: " + numGuesses;
 				return answer;
 				
 			case number > secret:
-				answer[1] = "Det gissade talet är för högt. Gissa igen! Hemliga talet: " + secret;
+				//Ökar antalet gissningar som gjorts med 1
+				numGuesses++;
+				answer[1] = "Det gissade talet är för högt. Gissa igen! Hemliga talet: " + secret + ", Antal gissningar: " + numGuesses;
+				return answer;
+				
+			case number == secret:
+				//Ökar antalet gissningar som gjorts med 1
+				numGuesses++;
+				answer[0] = true;
+				answer[1] = "Du gissade rätt! Du behövde " + numGuesses + " gissningar.";
 				return answer;
 				
 			default:
-				answer[0] = true;
-				answer[1] = "Du gissade rätt! Du behövde " + numGuesses + " gissningar.";
+				answer[1] = "Det du skrev verkar inte vara ett tal. Försök igen! Antal gissningar: " + numGuesses;
 				return answer;
 		}
 			
