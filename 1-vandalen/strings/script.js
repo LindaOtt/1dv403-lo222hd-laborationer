@@ -7,12 +7,21 @@ window.onload = function(){
 		// Plats för förändring.		
 		// Returnera den konverterade strängen.
 		// Vid fel, kasta ett undantag med ett meddelande till användaren. 
-	
-
-
-
-
-
+		
+		var message = "";
+		
+		//Går igenom varje karaktär i strängen
+		for (var i = 0; i<str.length; i++) {
+		    if (str[i] === str[i].toUpperCase()
+		        && str[i] !== str[i].toLowerCase()) {
+		        
+		        message = message + str[i].toLowerCase() + ": converted to lowercase<br>";
+		    } else {
+		        message = message + str[i].toUpperCase() + ": converted to uppercase<br>";
+		    }
+		}
+		
+		return message;
 
 	};
 	// ------------------------------------------------------------------------------
