@@ -6,8 +6,10 @@ window.onload = function(){
 	var birthday = function(date){
 
 		var valid = false;
+		var message = 0;
 		
 		//Kollar formatet på det inmatade datumet
+		/*
 		if (date.length == 10 && (date.charAt(4) === "-") && (date.charAt(7) === "-") ) {
 			if (isNaN(Date.parse(date))) {
 				alert("Not valid!");
@@ -19,8 +21,29 @@ window.onload = function(){
 		else {
 			alert('Not valid!');
 		}
+		*/
+		
+		if (date.length == 10 && (date.charAt(4) === "-") && (date.charAt(7) === "-") ) {
+			try {
+				//Omvandlar datumet som användaren skrivit in till strängformat
+				var dateString = Date.parse(date);
+				
+				//Hämtar dagens datum
+				var todayDate = new Date();
+				var todayYear = todayDate.getFullYear();
+				var todayMonth = todayDate.getMonth();
+				var todayDay = todayDate.getDate();
+				
+				alert(todayYear + "-" + todayMonth + "-" + todayDay);
+				
 
-		return 0;
+			}
+			catch(error) {
+				message = error;
+			}
+		}
+
+		return message;
 
 	};
 	// ------------------------------------------------------------------------------
