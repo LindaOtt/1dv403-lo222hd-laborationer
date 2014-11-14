@@ -34,8 +34,27 @@ window.onload = function(){
 				var todayMonth = todayDate.getMonth();
 				var todayDay = todayDate.getDate();
 				
-				alert(todayYear + "-" + todayMonth + "-" + todayDay);
+				//Skapar ett datumobjekt från användarens nästa födelsedag
+				var birthdayDate = new Date(date);
+
+				//Adderar 1 till birthdayMonth då månaderna börjar på 0
+				var birthdayMonth = birthdayDate.getMonth() + 1;
+				var birthdayDay = birthdayDate.getDate();
 				
+				//Lägger in nuvarande år i datumobjektet för nästa födelsedag
+				birthdayDate.setYear(todayYear);
+				var birthdayYear = birthdayDate.getFullYear();
+				
+				alert(birthdayYear + "-" + birthdayMonth + "-" + birthdayDay);
+				
+				//Räknar ut antalet dagar tills användaren fyller år
+				//med antagandet (enl uppgiften att användaren fyller år i år)
+				var timeLeft = birthdayDate - todayDate;
+				
+				message = timeLeft;
+				
+				//var nextBirthday = todayYear + "-" + birthdayMonth + "-" + birthdayDay;
+				//var nextBirthdayObject = new Date(nextBirthday);
 
 			}
 			catch(error) {
