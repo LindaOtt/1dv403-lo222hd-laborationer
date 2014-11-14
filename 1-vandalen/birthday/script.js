@@ -4,13 +4,23 @@ window.onload = function(){
 
 	
 	var birthday = function(date){
+
+		var valid = false;
 		
+		//Kollar formatet på det inmatade datumet
+		if (date.length == 10 && (date.charAt(4) === "-") && (date.charAt(7) === "-") ) {
+			if (isNaN(Date.parse(date))) {
+				alert("Not valid!");
+			}
+			else {
+				alert("Valid!");
+			}
+		}
+		else {
+			alert('Not valid!');
+		}
 
-
-			// Din kod här.
-
-
-
+		return 0;
 
 	};
 	// ------------------------------------------------------------------------------
