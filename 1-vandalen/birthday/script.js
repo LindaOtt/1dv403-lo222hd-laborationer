@@ -6,33 +6,30 @@ window.onload = function(){
 	var birthday = function(date){
 
 		var valid = false;
-		var message = 0;
-		
-		//Kollar formatet på det inmatade datumet
-		/*
-		if (date.length == 10 && (date.charAt(4) === "-") && (date.charAt(7) === "-") ) {
-			if (isNaN(Date.parse(date))) {
-				alert("Not valid!");
-			}
-			else {
-				alert("Valid!");
-			}
-		}
-		else {
-			alert('Not valid!');
-		}
-		*/
+		var message;
 		
 		if (date.length == 10 && (date.charAt(4) === "-") && (date.charAt(7) === "-") ) {
 			try {
 				//Omvandlar datumet som användaren skrivit in till strängformat
 				var dateString = Date.parse(date);
 				
+				//Variabel för antal millisekunder till nästa födelsedag
+				var msLeft;
+				
+				//Variabel för antal dagar kvar till nästa födelsedag
+				var daysLeft;
+				
+				//Räknar ut antal millisekunder per dag
+				var msPerDay = 24 * 60 * 60 * 1000;
+				
 				//Hämtar dagens datum
 				var todayDate = new Date();
 				var todayYear = todayDate.getFullYear();
 				var todayMonth = todayDate.getMonth();
 				var todayDay = todayDate.getDate();
+				var todayHours = todayDate.getHours();
+				var todayMinutes = todayDate.getMinutes();
+				var todaySeconds = todayDate.getSeconds();
 				
 				//Skapar ett datumobjekt från användarens nästa födelsedag
 				var birthdayDate = new Date(date);
@@ -43,19 +40,65 @@ window.onload = function(){
 				
 				//Lägger in nuvarande år i datumobjektet för nästa födelsedag
 				birthdayDate.setYear(todayYear);
+				//Lägger födelsedagstiden till nuvarande tid
+				birthdayDate.setHours(todayHours);
+				birthdayDate.setMinutes(todayMinutes);
+				birthdayDate.setSeconds(todaySeconds);
+				
+				
+
+				alert(birthdayDate);
+				alert(todayDate);
+				
 				var birthdayYear = birthdayDate.getFullYear();
 				
-				alert(birthdayYear + "-" + birthdayMonth + "-" + birthdayDay);
-				
-				//Räknar ut antalet dagar tills användaren fyller år
-				//med antagandet (enl uppgiften att användaren fyller år i år)
-				var timeLeft = birthdayDate - todayDate;
-				
-				message = timeLeft;
-				
-				//var nextBirthday = todayYear + "-" + birthdayMonth + "-" + birthdayDay;
-				//var nextBirthdayObject = new Date(nextBirthday);
+				//Kollar om födelsedagen redan ägt rum eller ligger längre fram i år
+				if (birthdayDate > todayDate) {
+					//Födelsedagen ligger längre fram i år
+					
+					//Kollar om födelsedagen är imorgon
+					//Räknar ut intervallet för dagen innan födelsedagen
+					var dayBeforeBirthday = new Date();
+					dayBeforeBirthday = birthdayDate - msPerDay;
+					
+					
+					//Räknar ut antalet millisekunder tills användaren fyller år
+					//med antagandet (enl uppgiften att användaren fyller år i år)
+					msLeft = birthdayDate - todayDate;
+					
+					//Omvandlar millisekunder till dagar
+					daysLeft = Math.round(msLeft/msPerDay);
+					
+					message = daysLeft;
+					
+				}
+				if (birthdayDate < todayDate) {
+					//Födelsedagen har redan ägt rum
 
+					//Skapar ett datumobjekt för nästa års födelsedag
+					var nextYearBirthday = new Date();
+					nextYearBirthday.setYear(todayYear + 1);
+					nextYearBirthday.setMonth(birthdayMonth - 1);
+					nextYearBirthday.setDate(birthdayDay);
+					
+					//Räknar ut hur många dagar som är kvar tills nästa års födelsedag
+					msLeft = nextYearBirthday - todayDate;
+					
+					//Omvandlar millisekunder till dagar
+					daysLeft = Math.round(msLeft/msPerDay);
+					
+					message = daysLeft;
+					
+				}
+				
+				
+				if (birthdayDate == todayDate) {
+					message = 0;
+					alert(birthdayDate + " " + todayDate);
+				}
+				
+				
+				
 			}
 			catch(error) {
 				message = error;
