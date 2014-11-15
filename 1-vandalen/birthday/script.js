@@ -5,13 +5,19 @@ window.onload = function(){
 	
 	var birthday = function(date){
 
-		var valid = false;
 		var message;
 		
 		if (date.length == 10 && (date.charAt(4) === "-") && (date.charAt(7) === "-") ) {
-			try {
-				//Omvandlar datumet som användaren skrivit in till strängformat
-				var dateString = Date.parse(date);
+			var dateYear = date.substring(0,4);
+			var dateMonth = date.substring(5,7);
+			var dateDate = date.substring(8); 
+
+			//if ( (typeof(Number(dateYear)) === 'number') && (typeof(Number(dateMonth)) === 'number') && (typeof(Number(dateDate)) === 'number')) {
+			if ( isNaN (Date.parse(date))) {
+				throw new Error('Du har inte skrivit in ett giltigt födelsedatum. Skriv i formatet ÅÅÅÅ-MM-DD');
+			}
+			else {
+				alert ("passed");
 				
 				//Variabel för antal millisekunder till nästa födelsedag
 				var msLeft;
@@ -96,11 +102,13 @@ window.onload = function(){
 					message = 0;
 				}
 				
-				
-			}
-			catch(error) {
-				message = error;
-			}
+			}	// End if (typeof(Number(year)))
+
+		} // End if (date.length == 10
+
+
+		else {
+			throw new Error('Du har inte skrivit in ett giltigt födelsedatum. Skriv i formatet ÅÅÅÅ-MM-DD');
 		}
 
 		return message;
