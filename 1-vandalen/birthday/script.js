@@ -30,6 +30,7 @@ window.onload = function(){
 				var todayHours = todayDate.getHours();
 				var todayMinutes = todayDate.getMinutes();
 				var todaySeconds = todayDate.getSeconds();
+				var todayMilliSeconds = todayDate.getMilliseconds();
 				
 				//Skapar ett datumobjekt från användarens nästa födelsedag
 				var birthdayDate = new Date(date);
@@ -44,11 +45,10 @@ window.onload = function(){
 				birthdayDate.setHours(todayHours);
 				birthdayDate.setMinutes(todayMinutes);
 				birthdayDate.setSeconds(todaySeconds);
+				birthdayDate.setSeconds(todayMilliSeconds);
 				
-				
-
-				alert(birthdayDate);
-				alert(todayDate);
+				//alert(birthdayDate);
+				//alert(todayDate);
 				
 				var birthdayYear = birthdayDate.getFullYear();
 				
@@ -92,11 +92,9 @@ window.onload = function(){
 				}
 				
 				
-				if (birthdayDate == todayDate) {
+				if (birthdayDate === todayDate) {
 					message = 0;
-					alert(birthdayDate + " " + todayDate);
 				}
-				
 				
 				
 			}
