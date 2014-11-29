@@ -1,12 +1,21 @@
 var messageApp = {
+    
+    messages: [],
 
 	init: function(){
-	    //Instansierar nytt Message-objekt
-	    var mess = new Message("Testmeddelande", new Date());
-	    //alert(mess); //Skriver ut meddelandet mha toString
-	    alert(mess.getText()); //Skriver ut endast texten
-	    mess.setText("En annan text"); //Skickar in en ny messagesträng
-	    alert(mess.getText()); //Testar message med nya texten
+		//Instansierar nytt Message-objekt
+		var mess0 = new Message("Testmeddelande 1", new Date());
+		var mess1 = new Message("Testmeddelande 2", new Date());
+
+		//Lägger till meddelandet till arrayen messages
+		messageApp.messages.push(mess0);
+		messageApp.messages.push(mess1);
+		   
+		var writeMessage = messageApp.messages[0].getText();
+		var writeMessage2 = messageApp.messages[1].getText();
+		   
+		alert(writeMessage);
+		alert(writeMessage2);
 	}
 	
 }
