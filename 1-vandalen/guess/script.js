@@ -2,7 +2,7 @@
 
 window.onload = function(){
 	
-	var secret = Math.floor( Math.random() * (100-1)+1 )+1; Math.floor( Math.random() * (100-1)+1) + 1; Math.floor( Math.random() * 100)+1; 
+	var secret = Math.floor( Math.random() * (100-1)+1 )+1; 
 	
 	//Skapar en variabel som håller koll på antalet gissningar
 	var numGuesses = 0;

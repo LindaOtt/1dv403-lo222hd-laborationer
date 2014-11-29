@@ -17,7 +17,6 @@ window.onload = function(){
 				throw new Error('Du har inte skrivit in ett giltigt födelsedatum. Skriv i formatet ÅÅÅÅ-MM-DD');
 			}
 			else {
-				alert ("passed");
 				
 				//Variabel för antal millisekunder till nästa födelsedag
 				var msLeft;
@@ -40,6 +39,8 @@ window.onload = function(){
 				
 				//Skapar ett datumobjekt från användarens nästa födelsedag
 				var birthdayDate = new Date(date);
+				
+				//Kolla birthdayDate omvandla tillbaka
 
 				//Adderar 1 till birthdayMonth då månaderna börjar på 0
 				var birthdayMonth = birthdayDate.getMonth() + 1;

@@ -17,8 +17,7 @@ window.onload = function(){
 				message = message + "#";
 			}
 			else {
-			    if (str[i] === str[i].toUpperCase()
-			        && str[i] !== str[i].toLowerCase()) {
+			    if (str[i] === str[i].toUpperCase()) {
 			        message = message + str[i].toLowerCase();
 			    } else {
 			        message = message + str[i].toUpperCase();
