@@ -14,8 +14,8 @@ var messageApp = {
 		var writeMessage = messageApp.messages[0].getText();
 		var writeMessage2 = messageApp.messages[1].getText();
 		   
-		alert(writeMessage);
-		alert(writeMessage2);
+		//alert(writeMessage);
+		//alert(writeMessage2);
 	}
 	
 }

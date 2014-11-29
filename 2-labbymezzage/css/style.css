@@ -1,0 +1,28 @@
+#content {
+    width: 800px;
+    margin: 0 auto;
+    background-color: #DCF2F0;
+    padding: 1em;
+}
+
+body {
+    background-color: #364259;
+    font-family: 'Special Elite';
+}
+
+h1 {
+    font-weight: bold;
+}
+
+textarea {
+    width: 90%;
+    height: 10em;
+}
+
+#submit-button {
+    width: 6em;
+    height: 3em;
+    display: block;
+    clear: both;
+}
+
