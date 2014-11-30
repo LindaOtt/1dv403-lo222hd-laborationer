@@ -2,7 +2,7 @@
 <head>
     <title>Labby Mezzage - Linda Ott Olander WP14</title>
     <link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script type="text/javascript" src="js/message.js"></script>
     <script type="text/javascript" src="js/messageObject.js"></script>
 </head>
@@ -11,8 +11,8 @@
         <h1>Labby Mezzage</h1>
         <div id="messagetouser"></div>
         <form>
-            <textarea></textarea>
-            <input id="submit-button" type="submit" value="Skriv">
+            <textarea id="message-area"></textarea>
+            <input id="submit-button" type="submit" value="Skriv" onclick="messageApp.init()">
         </form>
     </div>
 </body>
