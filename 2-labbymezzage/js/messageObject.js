@@ -42,21 +42,31 @@ var messageApp = {
 		
 		//Skapar en paragraf som innehåller meddelandet
 		var text = document.createElement("p");
-		text.innerHTML = messageApp.messages[messageID].getDate() + ": " + messageApp.messages[messageID].getText() + " ";
+		text.innerHTML = messageApp.messages[messageID].getMessDate() + ": " + messageApp.messages[messageID].getText() + " ";
 		
-		//Skapar en länk för att ta bort meddelandet
+		//Skapar en bildlänk för att ta bort meddelandet
 		var text2 = document.createElement("a");
 		text2.setAttribute('href', "#");
 		var onClickAttr = "messageApp.removeMessage(" + messageID + ")";
 		text2.setAttribute('onclick', onClickAttr);
 		var imgRemove = document.createElement("img");
-		imgRemove.setAttribute('src','bilder/ta-bort.jpg');
+		imgRemove.setAttribute('src','bilder/ta-bort.png');
 		text2.appendChild(imgRemove);
 		text.appendChild(text2); 
 		
 		var messageWriteOut = document.getElementById("writeout");
 		messageWriteOut.appendChild(text);
-
+		
+		//Skapar en bildlänk för att visa aktuell tid
+		var timeText = document.createElement("a");
+		timeText.setAttribute('href', "#");
+		var onClickAttr2 = "messageApp.showTime(" + messageID + ")";
+		timeText.setAttribute('onclick',onClickAttr2);
+		var imgShowTime = document.createElement("img");
+		imgShowTime.setAttribute('src','bilder/visa-tid.png');
+		timeText.appendChild(imgShowTime);
+		text.appendChild(timeText);
+		
 		
 		return false;
 	},
@@ -78,6 +88,14 @@ var messageApp = {
 		numberMessagesHTML.innerHTML = numberMessages;
 		
 		messageApp.renderMessages();
+	},
+	
+	showTime: function(messageID) {
+		var alertDate = messageApp.messages[messageID].getMessDate();
+		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+		var alertMessage = "Inlägget skapades " + alertDate.toLocaleDateString('sv-SV', options) + " klockan " + alertDate.getHours() + ":" + alertDate.getMinutes() + ":" + alertDate.getSeconds();
+		//Visar aktuell tid
+		alert(alertMessage);
 	}
 
 

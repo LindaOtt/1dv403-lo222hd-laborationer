@@ -17,12 +17,12 @@ function Message(message, date){
     //för datum
     
     //Hämtar datum
-    this.getDate = function() {
+    this.getMessDate = function() {
         return date;
     }
     
     //Sätter datum
-    this.setDate = function(_date) {
+    this.setMessDate = function(_date) {
         date = _date;
     }
     
