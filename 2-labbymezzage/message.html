@@ -9,10 +9,12 @@
 <body>
     <div id="content">
         <h1>Labby Mezzage</h1>
-        <div id="messagetouser"></div>
-        <form>
+        <p>Antal meddelanden: <span id="number-messages"></span></p>
+        
+        <form action="" onsubmit="return false">
             <textarea id="message-area"></textarea>
-            <input id="submit-button" type="submit" value="Skriv" onclick="messageApp.init()">
+            <input id="submit-button" type="submit" value="Skriv" onclick="messageApp.click()">
         </form>
+        <div id="writeout"></div>
     </div>
 </body>
