@@ -100,10 +100,15 @@ var messageApp = {
 	
 	keyPress: function(e) {
 		
-		if (e.keyCode == 13) {
-			//Användaren har tryckt på enter, kör renderMessages
+		//Kollar så att användaren inte håller ner SHIFT
+		//och att användaren trycker på Enter
+		if ((!e.shiftKey) && e.keyCode == 13) {
+			//Användaren har tryckt på enter, skapa messageobjekt och kör renderMessages
+			messageApp.click();
 			messageApp.renderMessages();
+			messageApp.updateMessCounter();
 		}
+
 	}
 
 
