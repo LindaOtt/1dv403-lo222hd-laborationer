@@ -5,8 +5,12 @@ var messageApp = {
     click: function() {
     	
     	var messageArea = document.getElementById("message-area");
+    	
+    	//Byter ut radbrytningar mot <br> mha getHTMLText
+    	var fixedMessage = messageApp.getHTMLText(messageArea.value);
+    	
 		//Instansierar nytt Message-objekt
-		var mess = new Message(messageArea.value, new Date());
+		var mess = new Message(fixedMessage, new Date());
 
 		//Lägger till meddelandet till arrayen messages
 		messageApp.messages.push(mess);
@@ -72,11 +76,15 @@ var messageApp = {
 	},
 	
 	removeMessage: function(messageID) {
-		//Tar bort meddelandet ur arrayen messages
-		var removed = messageApp.messages.splice(messageID, 1);
-
-		messageApp.renderMessages();
-		messageApp.updateMessCounter();
+		//Kollar om användaren verkligen vill ta bort meddelandet
+		if (window.confirm("Vill du verkligen ta bort meddelandet?")) { 
+			//Tar bort meddelandet ur arrayen messages
+			var removed = messageApp.messages.splice(messageID, 1);
+		
+			messageApp.renderMessages();
+			messageApp.updateMessCounter();
+		}
+		
 	},
 	
 	updateMessCounter: function() {
@@ -109,6 +117,10 @@ var messageApp = {
 			messageApp.updateMessCounter();
 		}
 
+	},
+	
+	getHTMLText: function(message) {
+		return message.replace(/[\n\r]/g, "<br>");
 	}
 
 
