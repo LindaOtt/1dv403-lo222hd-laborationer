@@ -96,6 +96,14 @@ var messageApp = {
 		var alertMessage = "Inlägget skapades " + alertDate.toLocaleDateString('sv-SV', options) + " klockan " + alertDate.getHours() + ":" + alertDate.getMinutes() + ":" + alertDate.getSeconds();
 		//Visar aktuell tid
 		alert(alertMessage);
+	},
+	
+	keyPress: function(e) {
+		
+		if (e.keyCode == 13) {
+			//Användaren har tryckt på enter, kör renderMessages
+			messageApp.renderMessages();
+		}
 	}
 
 

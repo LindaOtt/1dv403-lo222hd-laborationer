@@ -13,7 +13,7 @@
         <p>Antal meddelanden: <span id="number-messages">0</span></p>
         
         <form action="" onsubmit="return false">
-            <textarea id="message-area"></textarea>
+            <textarea id="message-area" onKeyPress="return messageApp.keyPress(event)"></textarea>
             <input id="submit-button" type="submit" value="Skriv" onclick="messageApp.click()">
         </form>
         <div id="writeout"></div>
