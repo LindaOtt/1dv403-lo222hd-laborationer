@@ -1,21 +1,23 @@
-<!doctype html lang="sv">
-<head>
-    <meta charset="utf-8">
-    <title>Labby Mezzage - Linda Ott Olander WP14</title>
-    <link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script type="text/javascript" src="js/message.js"></script>
-    <script type="text/javascript" src="js/messageObject.js"></script>
-</head>
-<body>
-    <div id="content">
-        <h1>Labby Mezzage</h1>
-        <p>Antal meddelanden: <span id="number-messages">0</span></p>
-        
-        <form action="" onsubmit="return false">
-            <textarea id="message-area" onKeyPress="return messageApp.keyPress(event)"></textarea>
-            <input id="submit-button" type="submit" value="Skriv" onclick="messageApp.click()">
-        </form>
-        <div id="writeout"></div>
-    </div>
-</body>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Labby Mezzage - Linda Ott Olander WP14</title>
+        <link href='https://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="text/javascript" src="js/message.js"></script>
+        <script type="text/javascript" src="js/messageObject.js"></script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>Labby Mezzage / Linda Ott Olander</h1>
+            <p>Antal meddelanden: <span id="number-messages">0</span></p>
+            
+            <form onsubmit="return false">
+                <textarea id="message-area" onKeyPress="return messageApp.keyPress(event)"></textarea>
+                <input id="submit-button" type="submit" value="Skriv" onclick="messageApp.click()">
+            </form>
+            <div id="writeout"></div>
+        </div>
+    </body>
+</html>

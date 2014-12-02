@@ -46,7 +46,12 @@ var messageApp = {
 		
 		//Skapar en paragraf som innehåller meddelandet
 		var text = document.createElement("p");
-		text.innerHTML = messageApp.messages[messageID].getMessDate() + ": " + messageApp.messages[messageID].getText() + " ";
+		var messageDate = messageApp.messages[messageID].getMessDate();
+		text.innerHTML = messageApp.messages[messageID].getText() + "<br>" + messageDate.getHours() + ":" + messageDate.getMinutes() + ":" + messageDate.getSeconds() + " ";
+		
+		//Skapa en behållare till bildlänkar för borttagning av meddelande och aktuell tid
+		var textHolder = document.createElement("div");
+		textHolder.setAttribute('class','change-message');
 		
 		//Skapar en bildlänk för att ta bort meddelandet
 		var text2 = document.createElement("a");
@@ -56,7 +61,8 @@ var messageApp = {
 		var imgRemove = document.createElement("img");
 		imgRemove.setAttribute('src','bilder/ta-bort.png');
 		text2.appendChild(imgRemove);
-		text.appendChild(text2); 
+		textHolder.appendChild(text2);
+		
 		
 		var messageWriteOut = document.getElementById("writeout");
 		messageWriteOut.appendChild(text);
@@ -69,7 +75,11 @@ var messageApp = {
 		var imgShowTime = document.createElement("img");
 		imgShowTime.setAttribute('src','bilder/visa-tid.png');
 		timeText.appendChild(imgShowTime);
-		text.appendChild(timeText);
+		textHolder.appendChild(timeText);
+		
+		
+		//Lägg till bildlänkarna till behållaren
+		text.appendChild(textHolder);
 		
 		
 		return false;
