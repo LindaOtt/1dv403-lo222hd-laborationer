@@ -2,8 +2,13 @@
 
 /* Skapar ett statiskt objekt */
 var Memory = { 
-    //Skapar en egenskap som håller koll på antalet vända brickor
-    numberTries: 0,
+    //Skapar en egenskap som håller koll på antalet vända brickor per två-vändning
+    numberTempTries: 0,
+    
+    //Skapar en egenskap som håller koll på totala antalet vända brickor
+    numberTotalTries: 0,
+    
+    totalTurnedCards: 0,
     
     //Skapar en egenskap som refererar till den utslumpade arrayen
     randomArray: [],
@@ -15,6 +20,8 @@ var Memory = {
         
         var rows = 3;
         var cols = 4;
+        
+        var totalCards = rows * cols;
 
         this.randomArray = RandomGenerator.getPictureArray(rows,cols);
         
@@ -55,10 +62,13 @@ var Memory = {
     //Skapar en funktion som sker onclick
     changeImage: function(imgId,arrayId) {
         
+        //Öka antalet totala försök med 1
+        Memory.numberTotalTries = Memory.numberTotalTries + 1;
+        
         //Kollar hur många brickor som har vänts
-        //Om mindre än två brickor vänts, gör följande
+        //Om mindre än två brickor vänts i den här omgången, gör följande
         //alert(Memory.numberTries);
-        if (Memory.numberTries < 2) {
+        if (Memory.numberTempTries < 2) {
         
             imgId = "card"+imgId;
             //Hämta referens till länken
@@ -67,32 +77,47 @@ var Memory = {
             
             image.setAttribute("src",imgSrc);
             
-            Memory.numberTries = Memory.numberTries + 1;
+            Memory.numberTempTries = Memory.numberTempTries + 1;
             
-            //Kollar om den senast uppvända brickan är densamma som föregående
-            if (Memory.idTurnedCard !== arrayId) {
+            
             
                 //Skapar en timer som vänder tillbaka brickan om en sekund
                 setTimeout(function() {
-                    var imgSrc = "pics/0.png";
-                    image.setAttribute("src",imgSrc);
-                    //Kollar om antalet vända brickor är högre än 0, i så fall ta bort ett
-                    
-                    if (Memory.numberTries > 0) {
-                        Memory.numberTries = Memory.numberTries - 1;
+                    //Kollar om den senast uppvända brickan är densamma som föregående
+                    if (Memory.idTurnedCard !== arrayId) {
+                        
+                        var imgSrc = "pics/0.png";
+                        image.setAttribute("src",imgSrc);
+                        //Kollar om antalet vända brickor är högre än 0, i så fall ta bort ett
+                        
+                        if (Memory.numberTempTries > 0) {
+                            Memory.numberTempTries = Memory.numberTempTries - 1;
+                        }
                     }
                     
+                    else {
+                        //Om två likadana brickor är uppe, sätt numberTries till 0
+                        Memory.numberTempTries = 0;
+                        
+                        //Och lägg brickorna till totalt antal vända kort
+                        Memory.totalTurnedCards = Memory.totalTurnedCards + 2;
+                        
+                        alert("Total turned cards:" + Memory.totalTurnedCards);
+                     
+                        //Kolla om det finns någon ovänd bricka kvar på spelplanen
+                        if (Memory.totalTurnedCards == Memory.totalNumberCards) {
+                            alert("Game over, you won. \n Number of tries: " + Memory.totalTurnedCards);
+                        }
+                    }
+                            
                 }, 1000);
-            }
-            else {
-                //Om två likadana brickor är uppe, sätt numberTries till 0
-                Memory.numberTries = 0;
-                
-            }
+            
+            
 
         }
         else {
-            alert("Vänta tills båda brickorna vänts tillbaka.")
+            //alert("Vänta tills båda brickorna vänts tillbaka.")
+            alert(Memory.numberTempTries);
         }
         
         //Sätter id för senast vända brickan

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="utf-8">
+        <title>L04 Validering - Linda Ott Olander WP14</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
+    <body>
+        <h1>Validering</h1>
+            <form action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php" method="post">
+                <label for="fornamn">Förnamn</label>
+                <input id="fornamn" name="fornamn" type="text">
+                
+                <label for="efternamn">Efternamn</label>
+                <input id="efternamn" name="efternamn" type="text">
+                
+                <label for="postnummer">Postnummer</label>
+                <input id="postnummer" name="postnummer" type="text">
+                
+                <label for="epost">E-post</label>
+                <input id="epost" name="epost" type="text">
+                
+                <label for="prismodell">Prismodell</label>
+                <select id="prismodell" name="prismodell">
+                    <option value="hog">Hög</option>
+                    <option value="medel">Medel</option>
+                    <option value="lag">Låg</option>
+                </select>
+                
+                <input type="submit" value="Genomför köp">
+            </form>
+        </div>
+    </body>
+</html>
