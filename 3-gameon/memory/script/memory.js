@@ -7,8 +7,8 @@ var Memory = {
     
     init: function() {
         
-        var rows = 4;
-        var cols = 3;
+        var rows = 3;
+        var cols = 4;
 
         this.randomArray = RandomGenerator.getPictureArray(rows,cols);
         
@@ -25,9 +25,8 @@ var Memory = {
                     tableHTML += "<tr>"; 
                 }
                 //Lägger till en td-tagg och numret
-                var imgNumber = this.randomArray[i];
-                //tableHTML += "<td><a href=\""+this.randomArray[i]+".png\"><img src=\"pics/0.png\" alt=\"Click me!\"></a></td>";
-                tableHTML += "<td><a href=\""+this.randomArray[i]+".png\"><img src=\"pics/"+this.randomArray[i]+".png\" alt=\"Click me!\"></a></td>";
+                var arrayId = randomArray[i];
+                tableHTML += "<td><a href=\"#\" onclick=\"Memory.changeImage("+i+","+arrayId+")\"><img src=\"pics/0.png\" id=\"card"+ i + "\" alt=\"Click me!\"></a></td>";
                 
                 //Lägger till en avslutande tr-tagg om colsCount % cols = 0
                 if (colsCount % cols === 0) {
@@ -37,11 +36,25 @@ var Memory = {
                 colsCount++;
                 
             }
+            
             //Skriver ut tabellen
             tableDiv.innerHTML = tableHTML;
+         
+      
         }
-    }
+    },
     
+    //Skapar en funktion som sker onclick
+    changeImage: function(imgId,arrayId) {
+        
+        imgId = "card"+imgId;
+        //Hämta referens till länken
+        var image = document.getElementById(imgId);
+        alert(arrayId);
+        var imgSrc = "pics/"+arrayId+".png";
+        
+        image.setAttribute("src",imgSrc);
+    }
     
 }
 
