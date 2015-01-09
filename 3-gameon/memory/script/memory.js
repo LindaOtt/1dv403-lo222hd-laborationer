@@ -28,7 +28,13 @@ var Memory = {
     
     imgId2: 0,
     
-    numberTries:0,
+    numberTries: 0,
+    
+    numberTotalTries: 0,
+    
+    numberSameCards: 0,
+    
+    numberTotalCards: 0,
     
     //Skapar en egenskap som refererar till den utslumpade arrayen
     randomArray: [],
@@ -40,6 +46,8 @@ var Memory = {
         
         var rows = 3;
         var cols = 4;
+        
+        Memory.numberTotalCards = (rows * cols)/2;
 
         this.randomArray = RandomGenerator.getPictureArray(rows,cols);
         
@@ -50,13 +58,14 @@ var Memory = {
             //Hämtar en referens till div-taggen där tabellen ska vara
             var tableDiv = document.getElementById("tableDiv");
             var tableHTML = "<table>";
-            for (var i=0; i<this.randomArray.length; i++) {
+            for (var i=1; i<this.randomArray.length+1; i++) {
                 //Lägger till en tr-tagg om colsCount % cols = 0
                 if (colsCount % cols === 1) {
                     tableHTML += "<tr>"; 
                 }
                 //Lägger till en td-tagg och numret
-                var arrayId = randomArray[i];
+                var j = i-1;
+                var arrayId = randomArray[j];
                 tableHTML += "<td><a href=\"#\" onclick=\"Memory.changeImage("+i+","+arrayId+")\"><img src=\"pics/0.png\" id=\"card"+ i + "\" alt=\"Click me!\"></a></td>";
                 
                 
@@ -94,6 +103,7 @@ var Memory = {
                 console.log("Memory.imgId1: " + Memory.imgId1);
                 break;
               case 1:
+                Memory.numberTotalTries = Memory.numberTotalTries + 1;
                 Memory.arrayId2 = arrayId;
                 Memory.imgId2 = imgId;
                 Memory.numberTries = Memory.numberTries + 1;
@@ -103,7 +113,14 @@ var Memory = {
                 
                 //Kolla om brickorna har samma id
                 if (Memory.arrayId1 === Memory.arrayId2) {
-                    //alert("Same!");
+                    //Räkna upp räknaren för antal drag med ett
+                    Memory.numberSameCards = Memory.numberSameCards + 1;
+                    //Kolla om alla brickorna är uppvända
+                    
+                    if (Memory.numberSameCards == Memory.numberTotalCards ) {
+                        alert("Game over, you won. Number of tries: " + Memory.numberTotalTries);
+                    }
+                    
                 }
                 else {
                    //Kör changeImgBack för att sätta tillbaka 0.png på brickorna
@@ -125,6 +142,8 @@ var Memory = {
             var imgSrc = "pics/"+arrayId+".png";
             image.setAttribute("src",imgSrc);
             //console.log("imgSrc:" + imgSrc);
+            
+           
         }
 
         
@@ -135,9 +154,10 @@ var Memory = {
     
     //Skapar en funktion som sker onclick
     changeImgBack: function(imgId) {
+        console.log("imgId in changeImgBack: "+imgId);
         //Skapar en timer som vänder tillbaka brickan om en sekund
-        setTimeout(function(imgId) {
-            console.log("imgId: "+imgId);
+        setTimeout(function() {
+            console.log("imgId in setTimeOut: "+imgId);
             //Sätt bilden tillbaka till 0.png
             var imgName = "card" + imgId;
             

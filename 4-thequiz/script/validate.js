@@ -15,7 +15,8 @@ var Validator = {
         }
         else {
             field.style.color = "green";
-            document.getElementById("fornamnlabel").style.color = "green";
+            var label = namn + "label";
+            document.getElementById(label).style.color = "green";
         }
     },
     
@@ -23,5 +24,9 @@ var Validator = {
         var errormessage = document.getElementById(namn);
         errormessage.removeChild(errormessage.firstChild);
         console.log(errormessage);
+    },
+    
+    postnummer: function(nummer) {
+        
     }
 }

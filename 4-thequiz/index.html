@@ -10,11 +10,12 @@
         <h1>Validering</h1>
             <form action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php" method="post">
                 <label id="fornamnlabel" for="fornamn">Förnamn</label>
-                <input id="fornamn" name="fornamn" onfocus="Validator.removeMessage('errormessage')" onblur="Validator.validate('fornamn')" type="text">
-                <div id="errormessage"></div>
+                <input id="fornamn" name="fornamn" onfocus="Validator.removeMessage('errormessage1')" onblur="Validator.validate('fornamn')" type="text">
+                <div id="errormessage1"></div>
                 
-                <label for="efternamn">Efternamn</label>
-                <input id="efternamn" name="efternamn" type="text">
+                <label id="efternamnlabel" for="efternamn">Efternamn</label>
+                <input id="efternamn" name="efternamn" onfocus="Validator.removeMessage('errormessage2')" onblur="Validator.validate('efternamn')" type="text">
+                <div id="errormessage2"></div>
                 
                 <label for="postnummer">Postnummer</label>
                 <input id="postnummer" name="postnummer" type="text">
