@@ -3,13 +3,15 @@
     <head>
         <meta charset="utf-8">
         <title>L04 Validering - Linda Ott Olander WP14</title>
+        <script type="text/javascript" src="script/validate.js"></script>
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
         <h1>Validering</h1>
             <form action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php" method="post">
-                <label for="fornamn">Förnamn</label>
-                <input id="fornamn" name="fornamn" type="text">
+                <label id="fornamnlabel" for="fornamn">Förnamn</label>
+                <input id="fornamn" name="fornamn" onfocus="Validator.removeMessage('errormessage')" onblur="Validator.validate('fornamn')" type="text">
+                <div id="errormessage"></div>
                 
                 <label for="efternamn">Efternamn</label>
                 <input id="efternamn" name="efternamn" type="text">

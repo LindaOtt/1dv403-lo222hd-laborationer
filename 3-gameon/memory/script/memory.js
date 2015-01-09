@@ -1,14 +1,34 @@
 "use strict";
 
+/*
+Mindre än två vända brickor:
+Lagra första brickans id
+Ändra utseendet på första brickan
+Lagra andra brickans id
+Ändra utseendet på andra brickan
+
+Två vända brickor:
+Kolla om id är samma
+Om id är samma, kör inte timer som vänder tillbaka
+Om id inte är samma, kör timer-funktion
+skicka in första id i funktionen card1, 
+ändra source till arrayId
+skicka in första id i funktionen card1, 
+ändra source till arrayId
+*/
+
 /* Skapar ett statiskt objekt */
 var Memory = { 
-    //Skapar en egenskap som håller koll på antalet vända brickor per två-vändning
-    numberTempTries: 0,
     
-    //Skapar en egenskap som håller koll på totala antalet vända brickor
-    numberTotalTries: 0,
+    arrayId1: 0,
     
-    totalTurnedCards: 0,
+    arrayId2: 0,
+    
+    imgId1: 0,
+    
+    imgId2: 0,
+    
+    numberTries:0,
     
     //Skapar en egenskap som refererar till den utslumpade arrayen
     randomArray: [],
@@ -20,8 +40,6 @@ var Memory = {
         
         var rows = 3;
         var cols = 4;
-        
-        var totalCards = rows * cols;
 
         this.randomArray = RandomGenerator.getPictureArray(rows,cols);
         
@@ -40,7 +58,6 @@ var Memory = {
                 //Lägger till en td-tagg och numret
                 var arrayId = randomArray[i];
                 tableHTML += "<td><a href=\"#\" onclick=\"Memory.changeImage("+i+","+arrayId+")\"><img src=\"pics/0.png\" id=\"card"+ i + "\" alt=\"Click me!\"></a></td>";
-                
                 
                 
                 //Lägger till en avslutande tr-tagg om colsCount % cols = 0
@@ -62,68 +79,78 @@ var Memory = {
     //Skapar en funktion som sker onclick
     changeImage: function(imgId,arrayId) {
         
-        //Öka antalet totala försök med 1
-        Memory.numberTotalTries = Memory.numberTotalTries + 1;
-        
         //Kollar hur många brickor som har vänts
-        //Om mindre än två brickor vänts i den här omgången, gör följande
+        //Om mindre än två brickor vänts, gör följande
         //alert(Memory.numberTries);
-        if (Memory.numberTempTries < 2) {
+        if (Memory.numberTries < 2) {
+            
+            switch (Memory.numberTries) {
+              case 0:
+                Memory.arrayId1 = arrayId;
+                Memory.imgId1 = imgId;
+                Memory.numberTries = Memory.numberTries + 1;
+                console.log("Memory.numberTries: " + Memory.numberTries);
+                console.log("Memory.arrayId1: " + Memory.arrayId1);
+                console.log("Memory.imgId1: " + Memory.imgId1);
+                break;
+              case 1:
+                Memory.arrayId2 = arrayId;
+                Memory.imgId2 = imgId;
+                Memory.numberTries = Memory.numberTries + 1;
+                console.log("Memory.numberTries: " + Memory.numberTries);
+                console.log("Memory.arrayId2: " + Memory.arrayId2);
+                console.log("Memory.imgId2: " + Memory.imgId2);
+                
+                //Kolla om brickorna har samma id
+                if (Memory.arrayId1 === Memory.arrayId2) {
+                    //alert("Same!");
+                }
+                else {
+                   //Kör changeImgBack för att sätta tillbaka 0.png på brickorna
+                   console.log("Memory.imgId1 in different: " + Memory.imgId1);
+                   console.log("Memory.imgId2 in different: " + Memory.imgId2);
+                   Memory.changeImgBack(Memory.imgId1);
+                   Memory.changeImgBack(Memory.imgId2);
+                }
+                
+                Memory.numberTries = 0;
+                break;
+            }
+            
         
             imgId = "card"+imgId;
-            //Hämta referens till länken
+            //console.log("imgId:" + imgId);
+            
             var image = document.getElementById(imgId);
             var imgSrc = "pics/"+arrayId+".png";
-            
             image.setAttribute("src",imgSrc);
-            
-            Memory.numberTempTries = Memory.numberTempTries + 1;
-            
-            
-            
-                //Skapar en timer som vänder tillbaka brickan om en sekund
-                setTimeout(function() {
-                    //Kollar om den senast uppvända brickan är densamma som föregående
-                    if (Memory.idTurnedCard !== arrayId) {
-                        
-                        var imgSrc = "pics/0.png";
-                        image.setAttribute("src",imgSrc);
-                        //Kollar om antalet vända brickor är högre än 0, i så fall ta bort ett
-                        
-                        if (Memory.numberTempTries > 0) {
-                            Memory.numberTempTries = Memory.numberTempTries - 1;
-                        }
-                    }
-                    
-                    else {
-                        //Om två likadana brickor är uppe, sätt numberTries till 0
-                        Memory.numberTempTries = 0;
-                        
-                        //Och lägg brickorna till totalt antal vända kort
-                        Memory.totalTurnedCards = Memory.totalTurnedCards + 2;
-                        
-                        alert("Total turned cards:" + Memory.totalTurnedCards);
-                     
-                        //Kolla om det finns någon ovänd bricka kvar på spelplanen
-                        if (Memory.totalTurnedCards == Memory.totalNumberCards) {
-                            alert("Game over, you won. \n Number of tries: " + Memory.totalTurnedCards);
-                        }
-                    }
-                            
-                }, 1000);
-            
-            
+            //console.log("imgSrc:" + imgSrc);
+        }
 
-        }
-        else {
-            //alert("Vänta tills båda brickorna vänts tillbaka.")
-            alert(Memory.numberTempTries);
-        }
         
         //Sätter id för senast vända brickan
-        Memory.idTurnedCard = arrayId;
+        this.idTurnedCard = arrayId;
+        this.previousTurnedCard = this.idTurnedCard;
+    },
+    
+    //Skapar en funktion som sker onclick
+    changeImgBack: function(imgId) {
+        //Skapar en timer som vänder tillbaka brickan om en sekund
+        setTimeout(function(imgId) {
+            console.log("imgId: "+imgId);
+            //Sätt bilden tillbaka till 0.png
+            var imgName = "card" + imgId;
+            
+            var image = document.getElementById(imgName);
+            var imgSrc = "pics/0.png";
+            image.setAttribute("src",imgSrc);
+            console.log("image: "+image);
+        }, 1000);
+        
     }
     
 }
+
+
 
 window.onload = Memory.init;
