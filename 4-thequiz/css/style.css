@@ -1,9 +1,0 @@
-label,
-input {
-    display: block;
-}
-
-#errormessage {
-    color: red;
-    display: inline-block;
-}

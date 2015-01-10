@@ -1,0 +1,17 @@
+label,
+input {
+    display: block;
+}
+
+#errormessage {
+    color: red;
+    display: inline-block;
+}
+
+.messagered {
+    color: red;
+}
+
+.messagegreen {
+    color: green;
+}
