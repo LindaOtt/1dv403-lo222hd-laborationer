@@ -26,36 +26,226 @@ Hur skickar jag tillbaka svaret på frågan till API:et?
 I vilket format ska frågan skickas tillbaka?
 
 
+
 */
 
 
 window.onload = function(){
-    alert("Hello");
-    var questionText = document.getElementById("question");
     
-    console.log("test");
-    
-    var xhr = new XMLHttpRequest(); //skapat requestobjekt
+    //Hämtar frågan
+    var url = "http://vhost3.lnu.se:20080/question/1";
+    //var response = getInfo(url);
+    var response = writeResponse();
+    //alert("response: " + response);
 
+    var nextURL;
+    
+    //Funktion som hämtar info
+    //url är dit requestobjektet ska skickas,
+    //infotyp är den typ av info som efterfrågas
+    function getInfo(url) {
+    
+        var xhr = new XMLHttpRequest(); //skapat requestobjekt
+        
+        var response;
+        
 		xhr.onreadystatechange = function(){
 
-			console.log("svar");
-
 			if(xhr.readyState === 4 && xhr.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
-				console.log(xhr.responseText);
-				var question = JSON.parse(xhr.responseText);
-				console.log(question.first);
-				questionText.appendChild(question);
+				response = JSON.parse(xhr.responseText);
+				writeResponse(response);
+				
+				
 			}
 
+            //alert("Response object:" + response);
+
 		};
+		
+		
+    
+    	xhr.open("GET", url, true);
+    
+    	xhr.send(null);
+    	
+        xhr.delete;
+    };
+    
+    function writeResponse() {
 
-		xhr.open("GET", "https://vhost3.lnu.se:20080/question/1", true);
+        
+        var nextURL =  "http://vhost3.lnu.se:20080/answer/1/";
 
-		xhr.send(null);
+        
+        document.getElementById("submitButton").addEventListener("click", function(){
+            //Hämtar värdet från input-fältet i formuläret
+            //var answer = document.getElementById("answer");
 
-/*
-	document.getElementById("submitButton").addEventListener("click", function(){
+            
+            var answer = {
+                "answer": 2
+            };
+            
+            
+
+            //Omvandla användarens svar till JSON-format
+            answer = JSON.stringify(answer);
+            
+            console.log("answer: " + answer);
+            
+            
+            //Skicka användarens svar i JSON-format till servern
+            var xhr2 = new XMLHttpRequest(); //skapat requestobjekt
+    
+    		xhr2.onreadystatechange = function(){
+    
+    			if(xhr2.readyState === 4 && xhr2.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+    				console.log("xhr2.responseText: " + xhr2.responseText);
+    			}
+    			else {
+    			    console.log("xhr2.readyState: " + xhr2.readyState);
+    			}
+    
+    		};
+    		
+    		console.log("nextURL 2: " + nextURL);
+    		
+    		xhr2.open('POST', nextURL, true); 
+    
+    		xhr2.setRequestHeader('Content-Type', 'application/json'); //Talar om för webbservern att det är i JSON-formatet vi skickar.
+    
+    		xhr2.send(answer);
+    		
+        });
+
+    }
+    
+    
+    /*
+    function writeResponse(response) {
+        console.log("Id: " + response.id);
+        console.log("Question: " + response.question);
+        console.log("nextURL: " + response.nextURL);
+        
+        var nextURL = response.nextURL;
+        
+        /* Skriver ut frågan 
+		var question = response.question;
+		var questionText = document.getElementById("question");
+        questionText.innerHTML = question;
+        
+        document.getElementById("submitButton").addEventListener("click", function(){
+            //Hämtar värdet från input-fältet i formuläret
+            var answer = document.getElementById("answer").value;
+
+            //Omvandla användarens svar till JSON-format
+            answer = JSON.stringify(answer);
+            console.log("answer: " + answer);
+            
+            
+            //Skicka användarens svar i JSON-format till servern
+            var xhr2 = new XMLHttpRequest(); //skapat requestobjekt
+    
+    		xhr2.onreadystatechange = function(){
+    
+    			if(xhr2.readyState === 4 && xhr2.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+    				console.log("xhr2.responseText: " + xhr2.responseText);
+    			}
+    			else {
+    			    console.log("xhr2.readyState: " + xhr2.readyState);
+    			}
+    
+    		};
+    		
+    		console.log("nextURL 2: " + nextURL);
+    		
+    		xhr2.open('POST', nextURL, true); 
+    
+    		xhr2.setRequestHeader('Content-Type', 'application/json'); //Talar om för webbservern att det är i JSON-formatet vi skickar.
+    
+    		xhr2.send(answer);
+    		
+        });
+
+    }
+    
+    */
+    
+    /*
+    document.getElementById("submitButton").addEventListener("click", function(){
+        
+        
+        
+        var xhr2 = new XMLHttpRequest(); //skapat requestobjekt
+	    
+	    xhr2.onreadystatechange = function(){
+                alert("Ready");
+    			if(xhr2.readyState === 4 && xhr2.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+    				var response = JSON.parse(xhr2.responseText);
+    				var nextURL = response.nextURL;
+    				alert(nextURL);
+    				console.log("nextURL: " + nextURL);
+    			}
+    			else {
+    			    alert("xhr2.readyState: " + xhr2.readyState);
+    			    alert("xhr2.status: " + xhr2.status);
+    			}
+
+    	};
+    	
+    	
+    
+    	xhr2.open("GET", url, true);
+    	
+    
+    	xhr2.send(null);
+
+    }); // Hämtat ut knappen och kopplat en event-hanterare på samma rad.
+    */
+    
+    /*
+    document.getElementById("submitButton").addEventListener("click", function(){
+    	    
+    	    //Hämtar användarens svar från formuläret
+    	    var answer = document.getElementById("answer");
+    	    
+    	    //Omvandlar svaret till JSON-format
+    	    var answerJSON = JSON.stringify(answer);
+    	    
+    		
+    		var xhr2 = new XMLHttpRequest(); //skapat requestobjekt
+    
+    		xhr2.onreadystatechange = function(){
+    
+    			//console.log("svar");
+    
+    			if(xhr2.readyState === 4 && xhr2.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+    				console.log(xhr.responseText);
+    				var nextURL = JSON.parse(xhr2.responseText);
+    				alert("nextURL: " + nextURL);
+    				//questionText.appendChild(question);
+    			}
+    
+    		};
+    		
+    		//console.log("nextURL: " + submitButton.nextURL);
+    		
+    		xhr2.open('POST', nextURL, true); //POST skickar data till filen setProduct.php, gör det synkront = true
+    
+    		xhr2.setRequestHeader('Content-Type', 'application/json'); //Talar om för webbservern att det är i JSON-formatet vi skickar.
+    
+    		//xhr.send(answerJSON);
+    
+    }); // Hämtat ut knappen och kopplat en event-hanterare på samma rad.
+    */
+    
+    function submitData(nextURL) {
+         //Hämtar användarens svar från formuläret
+	    var answer = document.getElementById("answer");
+	    
+	    //Omvandlar svaret till JSON-format
+	    var answerJSON = JSON.stringify(answer);
+	    
 		
 		var xhr = new XMLHttpRequest(); //skapat requestobjekt
 
@@ -65,17 +255,21 @@ window.onload = function(){
 
 			if(xhr.readyState === 4 && xhr.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
 				console.log(xhr.responseText);
-				var question = JSON.parse(xhr.responseText);
-				console.log(question.first);
-				questionText.appendChild(question);
+				var nextURL = JSON.parse(xhr.responseText);
+				alert("nextURL: " + nextURL);
+				//questionText.appendChild(question);
 			}
 
 		};
+		
+		//console.log("nextURL: " + submitButton.nextURL);
+		
+		xhr.open('POST', nextURL, true); //POST skickar data till filen setProduct.php, gör det synkront = true
 
-		xhr.open("GET", "http://vhost3.lnu.se:20080/question/1/", true);
+		xhr.setRequestHeader('Content-Type', 'application/json'); //Talar om för webbservern att det är i JSON-formatet vi skickar.
 
-		xhr.send(null);
+		xhr.send(answerJSON);
+    }
+    
 
-	}); // Hämtat ut knappen och kopplat en event-hanterare på samma rad.
-*/
 };

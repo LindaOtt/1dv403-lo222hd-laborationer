@@ -1,0 +1,19 @@
+body {
+    background-image: url(../pics/bg.jpg);
+    margin: 0;
+    padding: 0;
+}
+
+#menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    box-shadow: inset 2px 2px 15px #211f20;
+}
+
+#menu img {
+    padding: 4px;
+    padding-top: 6px;
+    cursor: pointer;
+}
