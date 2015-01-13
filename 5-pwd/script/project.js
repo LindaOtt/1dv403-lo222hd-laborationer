@@ -27,7 +27,10 @@ var Desktop = {
             galleryTitleDiv.id = "gallerytitle";
             galleryWindow.appendChild(galleryTitleDiv);
             
-            var galleryTitle = document.createTextNode("Image Viewer");
+            var galleryTitleH1 = document.createElement("H1");
+            galleryTitleH1.id = "gallerytitleh1"
+            var galleryTitleText = document.createTextNode("Image Viewer");
+            galleryTitleH1.appendChild(galleryTitleText);
             galleryIcon.setAttribute("src","pics/icon.png");
             galleryIcon.id = "galleryicon";
             desktopDiv.appendChild(galleryWindow);
@@ -39,18 +42,18 @@ var Desktop = {
             galleryCloseBtn.id = "galleryclose";
             
             galleryTitleDiv.appendChild(galleryIcon);
-            galleryTitleDiv.appendChild(galleryTitle);
+            galleryTitleDiv.appendChild(galleryTitleH1);
             galleryTitleDiv.appendChild(galleryCloseBtn);
             
             var galleryContentDiv = document.createElement("div");
             galleryContentDiv.id = "gallerycontent";
             galleryWindow.appendChild(galleryContentDiv);
             
-            var galleryContentH1 = document.createElement("H1");
-            galleryContentDiv.appendChild(galleryContentH1);
+            var galleryContentH2 = document.createElement("H2");
+            galleryContentDiv.appendChild(galleryContentH2);
             
-            var galleryContentH1Text = document.createTextNode("Gallery");
-            galleryContentH1.appendChild(galleryContentH1Text);
+            var galleryContentH2Text = document.createTextNode("Gallery");
+            galleryContentH2.appendChild(galleryContentH2Text);
             
             //När fönstret är färdigladdat, hämta bilderna
             //Kollar att #gallerycontent har skapats
