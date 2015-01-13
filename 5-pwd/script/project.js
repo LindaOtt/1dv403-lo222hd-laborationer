@@ -26,6 +26,7 @@ var Desktop = {
             var galleryTitleDiv = document.createElement("div");
             galleryTitleDiv.id = "gallerytitle";
             galleryWindow.appendChild(galleryTitleDiv);
+            
             var galleryTitle = document.createTextNode("Image Viewer");
             galleryIcon.setAttribute("src","pics/icon.png");
             galleryIcon.id = "galleryicon";
@@ -66,7 +67,7 @@ var Desktop = {
                 }
             }, 1000);
     
-        });
+        }, false);
         
         //console.log("galleryCloseBtn: " + galleryCloseBtn);
         
@@ -78,13 +79,8 @@ var Desktop = {
             galleryNode.parentNode.removeChild(galleryNode);
         });
         */
-        
-        
-        
-        
 
-        
-        
+ 
         
     },
     
@@ -94,19 +90,31 @@ var Desktop = {
         
         var response;
         
+        var loadingAnim = document.createElement("img");
+	    loadingAnim.setAttribute("src","pics/ajax-loader.gif");
+	    loadingAnim.id = "loadinganim";
+	    
+	    loadingAnim.className = "hide";
+        
 		xhr.onreadystatechange = function(){
+		    
+		    loadingAnim.className = "";
+		    
+		    var gallery = document.querySelector("#gallery");
+		    gallery.appendChild(loadingAnim);
 
 			if(xhr.readyState === 4 && xhr.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
 				response = JSON.parse(xhr.responseText);
 				//Skriver ut bilderna i galleriet
 				Desktop.writeImages(response);
-				
-				
+				console.log("loadingAnim classname: " + loadingAnim.className);
+				loadingAnim.className = "hide";
 			}
 			else {
 			    //alert("Not working");
 			}
 
+            
 		};
 
     	xhr.open("GET", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);
@@ -120,11 +128,74 @@ var Desktop = {
     writeImages: function(response) {
         var galleryContentDiv = document.getElementById("gallerycontent");
         var i;
+        var imgWidth = 0;
+        var imgHeight = 0;
+        
         for (i = 0; i < response.length; i++) {
+            var imgBox = document.createElement("div");
+            imgBox.className = "imgbox";
+            galleryContentDiv.appendChild(imgBox);
+            
             var img = document.createElement("img");
-            img.setAttribute("src",response[i].URL);
-            galleryContentDiv.appendChild(img);
+            img.id = "img-" + i;
+            img.setAttribute("src",response[i].thumbURL);
+            imgBox.appendChild(img);
+            
+            //Lagra bredden på den bredaste bilden
+            if (response[i].thumbWidth > imgWidth) {
+                imgWidth = response[i].thumbWidth;
+            }
+            
+            //Lagrar höjden på den högsta bilden
+            if (response[i].thumbHeight > imgHeight) {
+                imgHeight = response[i].thumbHeight;
+            }
+            
+            
         }
+        
+        //Skapar en eventlistener på hela galleriet
+        document.getElementById("gallery").addEventListener("click", function(e) {
+        	// e.target är det klickade elementet
+        	if(e.target && e.target.nodeName == "IMG") {
+        		//Kolla om bilden som klickats är stängningsknappen
+        		//eller om det är en del av galleriet
+        		if (e.target.id === "galleryclose") {
+        		    //Stänger fönstret
+        		    var gallery = document.querySelector("#gallery");
+        		    gallery.parentNode.removeChild(gallery);
+        		}
+        		else {
+        		    //Kollar om det som klickats är en bild i galleriet
+        		    if (e.target.id.indexOf("img") != -1) {
+        		        //Hämta id-nr ur e.target
+        		        var targetId = e.target.id.substring(4);
+        		        var url = response[targetId].URL;
+        		        Desktop.changeBackground(url);
+        		    }
+        		}
+        	}
+        });
+
+        
+        //Sätt bredden på bilderna till den bredaste bilden
+        //Och höjden på bilderna till den högsta bilden
+        if ((imgWidth > 0) && (imgHeight > 0)) {
+            imgWidth = imgWidth + "px";
+            imgHeight = imgHeight + "px";
+            var imgBoxes = document.querySelectorAll(".imgbox");
+ 
+            for (var j = 0; j < imgBoxes.length; j++) {
+                imgBoxes[j].style.width = imgWidth;
+                imgBoxes[j].style.height = imgHeight;
+            }
+        }
+    },
+    
+    changeBackground: function(url) {
+        //console.log("url: " + url);
+        url = "url(" + url + ")" ;
+        document.body.style.backgroundImage = url;
     }
     
 };

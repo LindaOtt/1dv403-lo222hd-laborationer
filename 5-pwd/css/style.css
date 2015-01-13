@@ -30,6 +30,7 @@ body {
     background-color: white;
     box-shadow: 10px 10px 20px #575451;
     border: 2px solid #787873;
+    overflow: scroll;
 }
 
 #gallerytitle {
@@ -60,4 +61,27 @@ body {
 
 #gallerycontent {
     padding: 6px;
+}
+
+.imgbox {
+    border: 1px solid black;
+    display: inline-block;
+    background-color: black;
+    text-align: center;
+    margin: 0 20px 20px 0;
+    border-radius: 5px;
+}
+
+#loadinganim {
+    z-index: 2;
+    position: absolute;
+    margin: 0 auto;
+}
+
+.hide {
+    display: none;
+}
+
+#gallery img {
+    cursor: pointer;
 }
