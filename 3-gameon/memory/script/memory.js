@@ -42,6 +42,9 @@ var Memory = {
     //Array som håller den skapade spelplanen
     memoryArray: [],
     
+    //Array som håller de två senast vända korten
+    turnedCardIds: [],
+    
     
     init: function() {
         
@@ -53,15 +56,52 @@ var Memory = {
         var body = document.querySelector("body");
 
         body.addEventListener("click", function (e) {
-         e = e || event;
-         if (e.target.className === "memorybrick") {
-           e.preventDefault();
-           Memory.changeImage(e);
-           Memory.writeMemory(memoryArray,rows,cols);
-          } 
-          else {
-              console.log("Didn't work");
-          }
+            e = e || event;
+            if (e.target.className === "memorybrick") {
+                e.preventDefault();
+                
+                Memory.changeImage(e);
+                Memory.writeMemory(memoryArray,rows,cols);
+                
+                //Kollar längden på turnedCardIds.
+                if (Memory.turnedCardIds.length < 2) {
+                    var arrayCard = [];
+                    //Hämtar bildens position
+                    var imgId = e.target.id.substring(4);
+                    arrayCard[0] = imgId;
+                    arrayCard[1] = Memory.memoryArray[imgId][0];
+                    Memory.turnedCardIds.push(arrayCard);
+                    //alert("arrayCard[0]: " + arrayCard[0] + " arrayCard[1]: " + arrayCard[1]);
+                }
+                if (Memory.turnedCardIds.length === 2) {
+                    var turnedId1 = Memory.turnedCardIds[0][1];
+                    var turnedId2 = Memory.turnedCardIds[1][1];
+                    alert("turnedId1: " + turnedId1 + " turnedId2: " + turnedId2);
+                    if (turnedId1 === turnedId2) {
+                        Memory.turnedCardIds.length = 0;
+                    }
+                    else {
+                        //setTimeOut
+                    }
+                }
+                
+           
+                //Kollar arrayen och ser om det finns två vända som är likadana
+                var checkedArray = Memory.checkMemory(Memory.memoryArray);
+                if (checkedArray[0] === true) {
+                    alert("Två vända kort!");
+                    if (checkedArray[1] === true) {
+                    alert("Två likadana kort!");
+                    }
+                    else {
+                        alert("...men de är olika.");
+                    }
+                }
+                
+            } 
+            else {
+                console.log("Didn't work");
+            }
         }, false);
         
         
@@ -69,8 +109,7 @@ var Memory = {
         Memory.numberTotalCards = (rows * cols)/2;
 
         //this.randomArray = RandomGenerator.getPictureArray(rows,cols);
-        
-        
+    
         //Skapar en spelplan i memoryArray
         var memoryArray = Memory.createArray(rows,cols);
         Memory.memoryArray = memoryArray;
@@ -82,6 +121,41 @@ var Memory = {
         else {
             console.log("Ingen spelplan skapades");
         }
+    },
+    
+    checkMemory: function(memoryArray) {
+        //Skapar array som håller om antalet vända kort är två,
+        //och om korten i så fall är likadana
+        var checkedArray = [];
+        checkedArray.push(false,false);
+        
+        //Skapar array som håller id för de vända korten
+        var turnedCardIds = [];
+        
+        //Loopar igenom memoryArray och kollar om det finns två eller fler vända brickor
+        for (var i=0; i<memoryArray.length; i++) {
+            var arrayCard = memoryArray[i];
+            
+            //Hämtar ut värdena från arrayCard
+            var turnedId = arrayCard[0];
+            var isClicked = arrayCard[1];
+            
+            if (isClicked === 1) {
+                turnedCardIds.push(turnedId); 
+            }
+        
+        }
+        
+        if (turnedCardIds.length === 2) {
+            checkedArray[0] = true;
+            //Jämför id 
+            if (turnedCardIds[0] === turnedCardIds[1]) {
+                checkedArray[1] = true;
+            }
+        }
+
+
+        return checkedArray;
     },
     
     preloadImages: function() {
