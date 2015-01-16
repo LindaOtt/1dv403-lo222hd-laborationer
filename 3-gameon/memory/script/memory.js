@@ -20,21 +20,9 @@ skicka in första id i funktionen card1,
 /* Skapar ett statiskt objekt */
 var Memory = { 
     
-    turnedId1: 0,
-    
-    turnedId2: 0,
-    
-    imgId1: 0,
-    
-    imgId2: 0,
-    
     numberTries: 0,
     
-    numberTotalTries: 0,
-    
-    numberSameCards: 0,
-    
-    numberTotalCards: 0,
+
     
     //Den utslumpade arrayen
     randomArray: [],
@@ -58,6 +46,12 @@ var Memory = {
         body.addEventListener("click", function (e) {
             e = e || event;
             if (e.target.className === "memorybrick") {
+                
+                //Lägger till ett försök till numberTries
+                Memory.numberTries++;
+                
+                console.log("Numbertries: " + Memory.numberTries);
+                
                 e.preventDefault();
                 
                 Memory.changeImage(e);
@@ -72,31 +66,47 @@ var Memory = {
                     arrayCard[1] = Memory.memoryArray[imgId][0];
                     Memory.turnedCardIds.push(arrayCard);
                     //alert("arrayCard[0]: " + arrayCard[0] + " arrayCard[1]: " + arrayCard[1]);
+                    
+                    
                 }
                 if (Memory.turnedCardIds.length === 2) {
                     var turnedId1 = Memory.turnedCardIds[0][1];
                     var turnedId2 = Memory.turnedCardIds[1][1];
-                    alert("turnedId1: " + turnedId1 + " turnedId2: " + turnedId2);
+                    //alert("turnedId1: " + turnedId1 + " turnedId2: " + turnedId2);
                     if (turnedId1 === turnedId2) {
                         Memory.turnedCardIds.length = 0;
                     }
                     else {
-                        //setTimeOut
+                        //Vänder tillbaka korten efter en sekund
+                        setTimeout(function() {
+                            var imgId1 = Memory.turnedCardIds[0][0];
+                            var imgId2 = Memory.turnedCardIds[1][0];
+                            //Ändrar korten i memoryArray så de inte är vända
+                            Memory.memoryArray[imgId1][1] = 0;
+                            Memory.memoryArray[imgId2][1] = 0;
+                            Memory.writeMemory(memoryArray,rows,cols);
+                            Memory.turnedCardIds.length = 0;
+                        }, 1000);
+                        
+                    }
+                    
+                    //Skapar en variabel som håller om det fortfarande finns ovända kort
+                    var unturnedCards = 0;
+                    
+                    //Letar igenom arrayen för att se om alla kort är vända nu
+                    for (var i=0; i<Memory.memoryArray.length; i++) {
+                        var turnedId = Memory.memoryArray[i][1];
+                        if (turnedId === 0) {
+                            unturnedCards++;
+                        }
+                        
+                    }
+                    
+                    if (unturnedCards === 0) {
+                        Memory.alertGameOver();
                     }
                 }
                 
-           
-                //Kollar arrayen och ser om det finns två vända som är likadana
-                var checkedArray = Memory.checkMemory(Memory.memoryArray);
-                if (checkedArray[0] === true) {
-                    alert("Två vända kort!");
-                    if (checkedArray[1] === true) {
-                    alert("Två likadana kort!");
-                    }
-                    else {
-                        alert("...men de är olika.");
-                    }
-                }
                 
             } 
             else {
@@ -121,6 +131,10 @@ var Memory = {
         else {
             console.log("Ingen spelplan skapades");
         }
+    },
+    
+    alertGameOver: function() {
+        alert("Game over, you won. Number of tries: " + Memory.numberTries);
     },
     
     checkMemory: function(memoryArray) {
