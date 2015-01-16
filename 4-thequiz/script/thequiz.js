@@ -32,21 +32,85 @@ I vilket format ska frågan skickas tillbaka?
 
 var TheQuiz = {
     
+    //Variabel som håller info hämtat från servern
+    response: [],
+    
+    responseId: 0,
+    
+    question: "Empty",
+    
+    nextURL: "",
+    
     init: function() {
     
         //Hämtar frågan
         var url = "http://vhost3.lnu.se:20080/question/1";
-        var response = getInfo(url);
-        //alert("response: " + response);
+        TheQuiz.getInfo(url, TheQuiz.saveResponse);
+        
+         //Hämtar värdet från response
+        //alert("Length: " + TheQuiz.response.length);
+        /*
+        TheQuiz.response.forEach(function(item){
+            console.log("Id: " + item.id);
+            console.log("Question: " + item.question);
+        });
+        */
+        
+        var responseLength = TheQuiz.response.length;
+        
+        //TheQuiz.writeQuestion();
+        
+        TheQuiz.response.forEach(function(item){
+            var questionGet = item.question;
+            alert("questionGet: " + questionGet);
+            var questionText = document.getElementById("question");
+            questionText.innerHTML = questionGet;
+        });
+        
+       
+        console.log("Init: TheQuiz.response[0]: " + TheQuiz.response);
     
         var nextURL;
+        
+        
+        //Skriver ut formuläret
+        //if (TheQuiz.writeForm()) {
+            TheQuiz.writeForm();
+            var submitButton = document.getElementById("submitbutton");
+            submitButton.addEventListener("click", function(){
+                //Skicka iväg informationen till servern
+                TheQuiz.sendResponse();
+            });
+        //}
+        //else {
+            //alert("Det gick inte att skriva ut formuläret.");
+        //}
+        
+        
     
     },
+    
+    saveResponse: function(data) {
+            TheQuiz.response.length = 0;
+            TheQuiz.response.push(data);
+    },
+    
+    writeQuestion: function() {
+        alert("TheQuiz length: " + TheQuiz.response.length);
+        TheQuiz.response.forEach(function(item){
+            var questionGet = item.question;
+            alert("questionGet: " + questionGet);
+            var questionText = document.getElementById("question");
+            questionText.innerHTML = questionGet;
+        });
+    },
+
     
     //Funktion som hämtar info
     //url är dit requestobjektet ska skickas,
     //infotyp är den typ av info som efterfrågas
-    getInfo: function(url) {
+    getInfo: function(url, callback) {
+
     
         var xhr = new XMLHttpRequest(); //skapat requestobjekt
         
@@ -55,17 +119,17 @@ var TheQuiz = {
 		xhr.onreadystatechange = function(){
 
 			if(xhr.readyState === 4 && xhr.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
-				response = JSON.parse(xhr.responseText);
-				TheQuiz.writeResponse(response);
+				var responseObject = JSON.parse(xhr.responseText);
+				callback(responseObject);
 				
+				//Sparar response i egenskap på objektet
+                TheQuiz.saveResponse(responseObject);
 				
 			}
 
             //alert("Response object:" + response);
 
 		};
-		
-		
     
     	xhr.open("GET", url, true);
     
@@ -76,8 +140,9 @@ var TheQuiz = {
     
     
     
-    createForm: function() {
+    writeForm: function() {
         var form = document.createElement("form");
+        form.id="questionform";
         var labelAnswer = document.createElement("label");
         labelAnswer.id = "labelanswer";
         var inputAnswer = document.createElement("input");
@@ -86,30 +151,29 @@ var TheQuiz = {
         inputAnswer.name = "answer";
         var submitButton = document.createElement("input");
         submitButton.type = "submit";
+        submitButton.id = "submitbutton";
         submitButton.value = "Skicka svar";
         
         form.appendChild(labelAnswer);
         form.appendChild(inputAnswer);
         form.appendChild(submitButton);
         
-        var formDiv =  document.querySelector("#questionForm");
+        var formDiv =  document.querySelector("#questionform");
         formDiv.appendChild(form);
         
     },
     
-    writeResponse: function(response) {
+    sendResponse: function() {
 
         
         //var nextURL =  "http://vhost3.lnu.se:20080/answer/1/";
         
-        var nextURL = response.nextURL;
-        
-        var question = response.question;
-		var questionText = document.getElementById("question");
-        questionText.innerHTML = question;
-
-        
-        document.getElementById("submitButton").addEventListener("click", function(){
+        TheQuiz.response.forEach(function(item){
+            var response = item.response;
+            var nextURL = item.nextURL;
+        });
+       
+        document.getElementById("submitbutton").addEventListener("click", function(){
             //Hämtar värdet från input-fältet i formuläret
             //var answer = document.getElementById("answer");
 
