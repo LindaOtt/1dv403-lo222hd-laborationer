@@ -1,45 +1,11 @@
 "use strict";
 
-/*
-Applikationen ska vara en SPA - Single Page Application
-
-Användaren ska svara på ett antal frågor. Svarar anv rätt
-tas hon vidare till nästa fråga.
-Svarar anv fel får hon reda på det och möjlighet att svara igen.
-
-Frågorna som ska besvaras finns på en extern server och nås via 
-ett REST-api. Adress: http://vhost3.lnu.se:20080
-Sökväg till första frågan: /question/1
-
-Applikationen ska hålla reda på hur många felaktiga svar 
-man givit för varje fråga.
-
-När samtliga frågor besvarats ska resultatet presenteras där
-det framgår hur många försök man behövde för att klara varje fråga.
-
-Vilka http-metoder behöver du använda för att kontakta API:et? 
-Hur ska svaren på frågorna skickas tillbaka? 
-Finns det någon dokumentation tillgänglig för API:et?
-
-Hur får jag tag i frågan som användaren ska svara på?
-Hur skickar jag tillbaka svaret på frågan till API:et?
-I vilket format ska frågan skickas tillbaka?
-
-
-
-*/
-
 
 var TheQuiz = {
     
     //Variabel som håller info hämtat från servern
-    response: [],
-    
-    responseId: 0,
     
     responseObject: {},
-    
-    question: "Empty",
     
     nextURL: "",
     
@@ -47,8 +13,6 @@ var TheQuiz = {
     
         //Hämtar frågan
         TheQuiz.getQuestion(url);
-
-        var nextURL;
  
     },
     
@@ -75,22 +39,37 @@ var TheQuiz = {
                 var xhr2 = new XMLHttpRequest(); //skapat requestobjekt
         
         		xhr2.onreadystatechange = function(){
+        		    
+        		    var error = document.getElementById("error");
         
-        			if(xhr2.readyState === 4 && xhr2.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
-        				//Användaren svarade rätt!
-        				console.log(xhr2.responseText);
-        				
-        				//Ladda om med ny fråga och url
-        			}
-        			else {
-        			    //Användaren svarade fel!
-        			    console.log(xhr2.responseText);
+        			if(xhr2.readyState === 4) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+        			    if (xhr2.status === 200) {
+            				//Användaren svarade rätt!
+            				console.log(xhr2.responseText);
+            				
+            				//Skriver ut meddelande
+                            error.innerHTML = "Rätt svar!";
+            				
+            				//Hämtar nästa URL
+            				var response = JSON.parse(xhr2.responseText);
+            				
+            				//Ladda om med ny fråga och URL
+            				TheQuiz.init(response.nextURL);
+        			    }
+        			    
+        			    else {
+        			        //Användaren svarade fel!
+            			    console.log(xhr2.responseText);
+            			    
+            			    //Skriver ut felmeddelande
+                            error.innerHTML = "Fel svar! Försök igen.";
+        			    }
         			}
         
         		};
         		
         		
-        		
+        	
         		xhr2.open('POST', nextURL, true); 
         
         		xhr2.setRequestHeader('Content-Type', 'application/json'); //Talar om för webbservern att det är i JSON-formatet vi skickar.
@@ -120,21 +99,24 @@ var TheQuiz = {
     
         var xhr = new XMLHttpRequest(); //skapat requestobjekt
         
-        var response;
-        
 		xhr.onreadystatechange = function(){
+		    var error = document.getElementById("error");
 
-			if(xhr.readyState === 4 && xhr.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
-				var response = JSON.parse(xhr.responseText);
-				
-				TheQuiz.writeAll(response);
-				
-				//Sparar response i egenskap på objektet
-                //TheQuiz.saveResponse(responseObject);
+			if(xhr.readyState === 4) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+			    if (xhr.status === 200) {
+    				var response = JSON.parse(xhr.responseText);
+    				
+    				TheQuiz.writeAll(response);
+			    }
+			    if (xhr.status === 404) {
+			        //Frågorna är slut!
+			        //Skriver ut meddelande
+                    error.innerHTML = "Frågorna är slut! Tack och hej då.";
+                    TheQuiz.emptyForm();
+        	    }
 				
 			}
-
-            //alert("Response object:" + response);
+			
 
 		};
     
@@ -148,60 +130,24 @@ var TheQuiz = {
     
     
     writeForm: function() {
-        var form = document.createElement("form");
-        form.id="questionform";
-        var labelAnswer = document.createElement("label");
-        labelAnswer.id = "labelanswer";
-        var inputAnswer = document.createElement("input");
-        inputAnswer.id = "answer";
-        inputAnswer.type = "text";
-        inputAnswer.name = "answer";
-        var submitButton = document.createElement("input");
-        submitButton.type = "submit";
-        submitButton.id = "submitbutton";
-        submitButton.value = "Skicka svar";
-        
-        form.appendChild(labelAnswer);
-        form.appendChild(inputAnswer);
-        form.appendChild(submitButton);
-        
+        var formHTML = "<form>";
+        formHTML += "<input type=\"text\" id=\"answer\" name=\"answer\">";
+        formHTML += "<input id=\"submitbutton\" type=\"submit\" value=\"Skicka svar\">";
+        formHTML += "</form>";
+       
         var formDiv =  document.querySelector("#questionform");
-        formDiv.appendChild(form);
+        formDiv.innerHTML = formHTML;
         
     },
     
-   
-    
-    submitData: function(nextURL) {
-        //Hämtar användarens svar från formuläret
-	    var answer = document.getElementById("answer");
-	    
-	    //Omvandlar svaret till JSON-format
-	    var answerJSON = JSON.stringify(answer);
-	    
-		
-		var xhr = new XMLHttpRequest(); //skapat requestobjekt
-
-		xhr.onreadystatechange = function(){
-
-			//console.log("svar");
-
-			if(xhr.readyState === 4 && xhr.status === 200) { //Allt ok med anropet och vi fick tillbaka statuskod 200
-				console.log(xhr.responseText);
-				var nextURL = JSON.parse(xhr.responseText);
-				alert("nextURL: " + nextURL);
-				//questionText.appendChild(question);
-			}
-
-		};
-		
-		//console.log("nextURL: " + submitButton.nextURL);
-		
-		xhr.open('POST', nextURL, true); //POST skickar data till filen setProduct.php, gör det synkront = true
-
-		xhr.setRequestHeader('Content-Type', 'application/json'); //Talar om för webbservern att det är i JSON-formatet vi skickar.
-
-		xhr.send(answerJSON);
+    emptyForm: function() {
+        //Tömmer frågan
+        var questionText = document.getElementById("question");
+        questionText.innerHTML = "";
+        
+        //Tar bort formuläret
+        var formDiv =  document.querySelector("#questionform");
+        formDiv.innerHTML = "";
     }
     
 

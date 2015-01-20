@@ -7,3 +7,38 @@ td {
 .memorybrick {
     cursor: pointer;
 }
+
+#preload-1 {
+    background: url(pics/1.png) -9999px -9999px;
+}
+
+#preload-2 {
+    background: url(pics/2.png) -9999px -9999px;
+}
+
+#preload-3 {
+    background: url(pics/3.png) -9999px -9999px;
+}
+
+#preload-4 {
+    background: url(pics/4.png) -9999px -9999px;
+}
+
+#preload-5 {
+    background: url(pics/5.png) -9999px -9999px;
+}
+
+#preload-6 {
+    background: url(pics/6.png) -9999px -9999px;
+}
+
+#preload-7 {
+    background: url(pics/7.png) -9999px -9999px;
+}
+
+#preload-8 {
+    background: url(pics/8.png) -9999px -9999px;
+}
+
+
+
