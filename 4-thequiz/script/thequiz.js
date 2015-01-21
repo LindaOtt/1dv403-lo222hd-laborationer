@@ -4,8 +4,16 @@
 var TheQuiz = {
     
     //Variabel som håller info hämtat från servern
-    
     responseObject: {},
+    
+    //Egenskap som håller koll på totala antalet svar som användaren skickar
+    numberTries: 0,
+    
+    //Array som håller koll på antalet försök per fråga
+    numTriesQuestion: [],
+    
+    //Räknare som håller koll på antalet försök per fråga
+    count: 0,
     
     nextURL: "",
     
@@ -29,8 +37,15 @@ var TheQuiz = {
             //Skriver ut formuläret
             TheQuiz.writeForm();
             
+
+            
             //Skapa en lyssnare på knappen
             document.getElementById("submitbutton").addEventListener("click", function(e){
+                //Lägger till ett till totala antalet svar som användaren skickat
+                TheQuiz.numberTries = TheQuiz.numberTries + 1;
+                
+                TheQuiz.count++;
+                
                 e.preventDefault();
                 var nextURL = response.nextURL;
                 console.log("nextURL: " + nextURL);
@@ -43,7 +58,9 @@ var TheQuiz = {
         		    var error = document.getElementById("error");
         
         			if(xhr2.readyState === 4) { //Allt ok med anropet och vi fick tillbaka statuskod 200
+        			    
         			    if (xhr2.status === 200) {
+        			        
             				//Användaren svarade rätt!
             				console.log(xhr2.responseText);
             				
@@ -55,9 +72,16 @@ var TheQuiz = {
             				
             				//Ladda om med ny fråga och URL
             				TheQuiz.init(response.nextURL);
+            				
+            				//Lägger till antalet försök på den här frågan till TheQuiz.numTriesQuestion
+            				TheQuiz.numTriesQuestion.push(TheQuiz.count);
+            				TheQuiz.count = 0;
+            				
+            				
         			    }
         			    
         			    else {
+        			        
         			        //Användaren svarade fel!
             			    console.log(xhr2.responseText);
             			    
@@ -87,7 +111,15 @@ var TheQuiz = {
         		
         		//Skickar svaret
         		xhr2.send(answer);
+        		
+        		//alert(TheQuiz.numTriesQuestion.length);
+        		//alert(TheQuiz.numTriesQuestion.count);
+                for (var i=0; i<TheQuiz.numTriesQuestion.length; i++) {
+    			    console.log("TheQuiz number tries per question " + i + ": " + TheQuiz.numTriesQuestion[i]);
+    			}
             });
+            
+           
     },
 
     
@@ -96,7 +128,6 @@ var TheQuiz = {
     //infotyp är den typ av info som efterfrågas
     getQuestion: function(url) {
 
-    
         var xhr = new XMLHttpRequest(); //skapat requestobjekt
         
 		xhr.onreadystatechange = function(){
@@ -111,7 +142,14 @@ var TheQuiz = {
 			    if (xhr.status === 404) {
 			        //Frågorna är slut!
 			        //Skriver ut meddelande
-                    error.innerHTML = "Frågorna är slut! Tack och hej då.";
+			        var message = "<p>Du svarade på " + TheQuiz.numTriesQuestion.length + " frågor.<br>";
+			        message = message + "Frågorna är slut! Det tog dig " + TheQuiz.numberTries + " försök att svara rätt.</p><p>";
+			        for (var i=0; i<TheQuiz.numTriesQuestion.length; i++) {
+                        message = message + "Fråga " + (i + 1) + ": " + TheQuiz.numTriesQuestion[i] + " försök.<br>";
+			        }
+			        message = message + "</p>";
+                    error.innerHTML = message;
+                    
                     TheQuiz.emptyForm();
         	    }
 				

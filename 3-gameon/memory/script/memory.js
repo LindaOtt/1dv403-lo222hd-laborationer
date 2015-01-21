@@ -1,28 +1,9 @@
 "use strict";
 
-/*
-Mindre än två vända brickor:
-Lagra första brickans id
-Ändra utseendet på första brickan
-Lagra andra brickans id
-Ändra utseendet på andra brickan
-
-Två vända brickor:
-Kolla om id är samma
-Om id är samma, kör inte timer som vänder tillbaka
-Om id inte är samma, kör timer-funktion
-skicka in första id i funktionen card1, 
-ändra source till turnedId
-skicka in första id i funktionen card1, 
-ändra source till turnedId
-*/
-
 /* Skapar ett statiskt objekt */
 var Memory = { 
     
     numberTries: 0,
-    
-
     
     //Den utslumpade arrayen
     randomArray: [],
@@ -35,6 +16,8 @@ var Memory = {
     
     
     init: function() {
+        
+        Memory.preloadImages();
 
         var rows = 4;
         var cols = 4;
@@ -42,13 +25,14 @@ var Memory = {
         var body = document.querySelector("body");
 
         body.addEventListener("click", function (e) {
+            
             e = e || event;
             if (e.target.className === "memorybrick") {
                 
                 //Lägger till ett försök till numberTries
                 Memory.numberTries++;
                 
-                console.log("Numbertries: " + Memory.numberTries);
+                //console.log("Numbertries: " + Memory.numberTries);
                 
                 e.preventDefault();
                 
@@ -59,7 +43,15 @@ var Memory = {
                 if (Memory.turnedCardIds.length < 2) {
                     var arrayCard = [];
                     //Hämtar bildens position
-                    var imgId = e.target.id.substring(4);
+                    //Kollar om jag har klickat på bilden eller på a-taggen
+                    var imgId;
+                    if (e.target.nodeName=== "A") {
+                        imgId = e.target.firstChild.id.substring(4);
+                    }
+                    else {
+                        imgId = e.target.id.substring(4);
+                    }
+                    //console.log("imgId: " + imgId);
                     arrayCard[0] = imgId;
                     arrayCard[1] = Memory.memoryArray[imgId][0];
                     Memory.turnedCardIds.push(arrayCard);
@@ -109,6 +101,7 @@ var Memory = {
             } 
             else {
                 console.log("Didn't work");
+                //console.log(e.currentTarget.className);
             }
         }, false);
         
@@ -188,16 +181,6 @@ var Memory = {
             memoryArray[i] = arrayCard;
         }
         
-        
-        for (var j=0; j<memoryArray.length; j++ ) {
-            console.log(j + ": ");
-            //Hämtar ut arrayen ur memoryArray
-            arrayCard = memoryArray[j];
-            for (var k=0; k<arrayCard.length;k++) {
-                console.log(j + "." + k + ": " + arrayCard[k]);
-            }
-        }
-        
         return memoryArray;
         
     },
@@ -220,14 +203,14 @@ var Memory = {
             var turnedId = arrayCard[0];
             var isClicked = arrayCard[1];
             
-            tableHTML += "<td><img src=\"pics/";
+            tableHTML += "<td><a class=\"memorybrick\" href=\"#\"><img class=\"memorybrick\" id=\"card"+ j + "\" src=\"pics/";
             if (isClicked === 0) {
                 tableHTML +="0";
             }
             else {
                 tableHTML +=turnedId;
             }
-            tableHTML += ".png\" class=\"memorybrick\" id=\"card"+ j + "\" alt=\"Click me!\"></td>";
+            tableHTML += ".png\" alt=\"Click me!\"></a></td>";
             
             //Lägger till en avslutande tr-tagg om colsCount % cols = 0
             if (colsCount % cols === 0) {
@@ -242,17 +225,48 @@ var Memory = {
         tableDiv.innerHTML = tableHTML;
     },
     
+    preloadImages: function() {
+        if(document.images) {
+            var img1 = new Image();
+    		var img2 = new Image();
+    		var img3 = new Image();
+    		var img4 = new Image();
+    		var img5 = new Image();
+    		var img6 = new Image();
+    		var img7 = new Image();
+    		var img8 = new Image();
+    
+    		img1.src = "pics/1.png";
+    		img2.src = "pics/2.png";
+    		img3.src = "pics/3.png";
+    		img4.src = "pics/4.png";
+    		img5.src = "pics/5.png";
+    		img6.src = "pics/6.png";
+    		img7.src = "pics/7.png";
+    		img8.src = "pics/8.png";
+        }
+    },
+    
     changeImage: function(e) {
         //Hämtar bildens position
-        var imgId = e.target.id.substring(4);
-        //alert("imgId:" + imgId);
+        var target = e.target || e.srcElement;
+        
+        var imgId;
+        if (e.target.nodeName=== "A") {
+            imgId = e.target.firstChild.id.substring(4);
+        }
+        else {
+            imgId = e.target.id.substring(4);
+        }
+        //console.log("imgId: " + imgId);
+        //console.log("Target nodeName: " + e.target.nodeName);
         
         //Hämtar den vända bildens id
         //Hämtar kortet från spelplansarrayen
         var arrayCardGet = Memory.memoryArray[imgId];
         var arrayCardId = arrayCardGet[0];
         var arrayCard = [arrayCardId,1];
-        console.log("arrayCardId: " + arrayCardId);
+        //console.log("arrayCardId: " + arrayCardId);
         
         //Ändrar isClicked till 1 i arrayen
         Memory.memoryArray[imgId] = arrayCard;

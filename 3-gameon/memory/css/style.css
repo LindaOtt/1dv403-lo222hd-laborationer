@@ -4,20 +4,16 @@ td {
     border: 1px solid black;
 }
 
-.memorybrick {
-    cursor: pointer;
-}
-
 #preload-1 {
-    background: url(pics/1.png) -9999px -9999px;
+    background: url("pics/1.png") -9999px -9999px;
 }
 
 #preload-2 {
-    background: url(pics/2.png) -9999px -9999px;
+    background: url("pics/2.png") -9999px -9999px;
 }
 
 #preload-3 {
-    background: url(pics/3.png) -9999px -9999px;
+    background: url("pics/3.png") -9999px -9999px;
 }
 
 #preload-4 {
@@ -39,6 +35,7 @@ td {
 #preload-8 {
     background: url(pics/8.png) -9999px -9999px;
 }
+
 
 
 

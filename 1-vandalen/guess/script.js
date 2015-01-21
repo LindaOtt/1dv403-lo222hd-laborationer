@@ -19,6 +19,9 @@ window.onload = function(){
 		
 		//Jämför det gissade talet med det hemliga talet
 		switch (true) {
+			case number === "":
+				answer[1] = "Du skrev inget. Försök igen!";
+				return answer;
 			case number < secret:
 				//Ökar antalet gissningar som gjorts med 1
 				numGuesses++;
